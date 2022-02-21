@@ -28,6 +28,7 @@ app.post("/credentials", (req, res) => {
 	let response = req.body
 
 	console.log(response);
+	
 
 	exec(`ldapwhoami -vvv -h 35.222.21.151 -p 389 -D 'uid=${response.user},ou=People,dc=csi4660,dc=local' -x -w ${response.password}`, (error, stdout, stderr) => {
 		if (error) {
