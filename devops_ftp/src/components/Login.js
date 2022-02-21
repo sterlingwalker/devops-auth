@@ -6,7 +6,8 @@ export default function Login() {
         const [userName, setUserName] = React.useState('');
         const [password, setPassword] = React.useState('');
 
-        const handleSubmit = () => {
+        const handleSubmit = (event) => {
+            event.preventDefault();
             console.log(userName)
             validateCredentials({user: userName, password: password})
         }
