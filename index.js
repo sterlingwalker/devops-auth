@@ -46,6 +46,30 @@ app.post("/credentials", (req, res) => {
 		}
 	});
 });
+
+app.post("/checkToken", (req, res) => {
+	let response = req.body
+
+	// ldapsearch -x -b dc=csi4660,dc=local 'uid=dijaz'
+	exec(`ldapsearch -x -b dc=csi4660,dc=local 'gecos=${response.token}'`, (error, stdout, stderr) => {
+		if (error) {
+			console.log(`error: ${error.message}`);
+			return;
+		}
+		if (stderr) {
+			console.log(`stderr: ${stderr}`);
+		}
+		console.log(`stdout: ${stdout}`);
+
+		if (stdout.includes('cn')) {
+			console.log('token success')
+			res.json({authenticated: true})
+		} else {
+			res.json({authenticated: false})
+		}
+	});
+})
+
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
 	  res.sendFile(path.resolve(__dirname, './devops_ftp/build', 'index.html'));
