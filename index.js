@@ -6,6 +6,8 @@ var cors = require('cors')
 
 var app = express()
 app.use(cors())
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 app.use(
 	express.urlencoded({
@@ -28,7 +30,8 @@ app.post("/credentials", (req, res) => {
 	let response = req.body
 
 	console.log(response);
-	
+	console.log(req.cookies)
+
 
 	exec(`ldapwhoami -vvv -h 35.222.21.151 -p 389 -D 'uid=${response.user},ou=People,dc=csi4660,dc=local' -x -w ${response.password}`, (error, stdout, stderr) => {
 		if (error) {
@@ -42,6 +45,7 @@ app.post("/credentials", (req, res) => {
 
 		if (stdout.includes('Success (0)')) {
 			console.log('forwarding success')
+			res.cookie("token", "test");
 			res.json({success: true})
 		}
 	});
@@ -63,16 +67,26 @@ app.post("/checkToken", (req, res) => {
 
 		if (stdout.includes('cn')) {
 			console.log('token success')
-			res.json({authenticated: true})
+			res.status(200)
+			res.send(stdout)
 		} else {
-			res.json({authenticated: false})
+			res.sendStatus(400)
 		}
 	});
 })
 
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
-	  res.sendFile(path.resolve(__dirname, './devops_ftp/build', 'index.html'));
+	let cookies = req.cookies
+	console.log(cookies)
+
+	if (cookies.token == undefined) {
+		res.sendFile(path.resolve(__dirname, './devops_ftp/build', 'index.html'));
+	} else {
+		res.redirect('https://google.com')
+
+	}
+
 });
 
 app.listen(PORT, () => {

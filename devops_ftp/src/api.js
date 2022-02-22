@@ -15,6 +15,6 @@ export const validateCredentials = async (creds) => {
     if (result.success == true) {
         window.location = 'http://dev.nightoff.org/'
     } else {
-        location.reload();
+        window.location.reload();
     }
 }
