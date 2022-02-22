@@ -20,10 +20,7 @@ function App() {
       </nav>
       <div className="auth-wrapper">
         <div className="auth-inner">
-          <Routes>
-            <Route path='/' element={<Login />} />
-          </Routes>
-          
+          <Login />
         </div>
       </div>
     </div>
