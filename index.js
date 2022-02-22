@@ -9,11 +9,13 @@ var app = express()
 const https = require('https');
 const fs = require('fs');
 
-var key = fs.readFileSync(__dirname + '/../../cert/selfsigned.key');
-var cert = fs.readFileSync(__dirname + '/../../cert/selfsigned.crt');
+var key = fs.readFileSync(__dirname + '/../../cert/private.key');
+var cert = fs.readFileSync(__dirname + '/../../cert/certificate.crt');
+var ca = fs.readFileSync(__dirname + '/../../cert/ca_bundle.crt');
 var options = {
   key: key,
-  cert: cert
+  cert: cert,
+  ca: ca
 };
 
 app.use(cors())
