@@ -60,17 +60,16 @@ app.post("/credentials", (req, res) => {
 			console.log('forwarding success')
 
 			let token = ''
-			if (response.user == 'swalker') {
-				token = '54a832db478268af45d7ee66fe59b1bb'
-			}
-			if (response.user == 'dijaz') {
-				token = 'ab0f67bd318734beee564648e01a5a6e'
-			}
-			if (response.user == 'tbrooks') {
-				token = '70b434a79c2f47a8bb8636d2f2d43d86'
-			}
-			res.cookie("token", token);
-			res.json({success: true})
+
+			exec(`ldapsearch -x -b dc=csi4660,dc=local 'uid=${response.user}'`, (error, stdout, stderr) => {
+				if (stdout.includes('cn')) {
+					console.log('token success')
+					token = stdout.split('\n').find(str => str.includes('gecos: ')).replace('gecos: ', '')
+					res.cookie("token", token);
+					res.json({success: true})
+				}
+			})
+			
 		}
 	});
 });
