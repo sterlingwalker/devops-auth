@@ -5,6 +5,17 @@ const path = require('path');
 var cors = require('cors')
 
 var app = express()
+
+const https = require('https');
+const fs = require('fs');
+
+var key = fs.readFileSync(__dirname + '../../cert/selfsigned.key');
+var cert = fs.readFileSync(__dirname + '/../cert/selfsigned.crt');
+var options = {
+  key: key,
+  cert: cert
+};
+
 app.use(cors())
 var cookieParser = require('cookie-parser');
 app.use(cookieParser());
@@ -100,6 +111,10 @@ app.get('*', (req, res) => {
 
 });
 
-app.listen(PORT, () => {
-	  console.log(`Server listening on ${PORT}`);
+
+var server = https.createServer(options, app);
+
+server.listen(9000, () => {
+  console.log("server starting on port : " + 9000)
 });
+
