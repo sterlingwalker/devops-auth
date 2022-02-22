@@ -69,7 +69,6 @@ app.post("/credentials", (req, res) => {
 					res.json({success: true})
 				}
 			})
-			
 		}
 	});
 });
@@ -77,7 +76,6 @@ app.post("/credentials", (req, res) => {
 app.get("/checkToken", (req, res) => {
 	let response = req.query.token
 
-	// ldapsearch -x -b dc=csi4660,dc=local 'uid=dijaz'
 	exec(`ldapsearch -x -b dc=csi4660,dc=local 'gecos=${response}'`, (error, stdout, stderr) => {
 		if (error) {
 			console.log(`error: ${error.message}`);
