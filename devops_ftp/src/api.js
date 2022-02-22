@@ -13,7 +13,7 @@ export const validateCredentials = async (creds) => {
     console.log(result)
 
     if (result.success == true) {
-        window.location = 'http://dev.nightoff.org/'
+        window.location = '/sso'
     } else {
         window.location.reload();
     }

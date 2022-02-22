@@ -106,7 +106,7 @@ app.get('*', (req, res) => {
 	if (cookies.token == undefined) {
 		res.sendFile(path.resolve(__dirname, './devops_ftp/build', 'index.html'));
 	} else {
-		res.redirect(`http://dev.nightoff.org/token/${cookies.token}`)
+		res.redirect(`https://dev.nightoff.org/token/${cookies.token}`)
 	}
 
 });
