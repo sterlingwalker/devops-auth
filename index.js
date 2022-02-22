@@ -51,7 +51,7 @@ app.post("/credentials", (req, res) => {
 	});
 });
 
-app.post("/checkToken", (req, res) => {
+app.get("/checkToken", (req, res) => {
 	let response = req.query.token
 
 	// ldapsearch -x -b dc=csi4660,dc=local 'uid=dijaz'
