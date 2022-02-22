@@ -21,8 +21,8 @@ function App() {
       <div className="auth-wrapper">
         <div className="auth-inner">
           <Routes>
-            <Route exact path='/' element={<Login />} />
             <Route exact path='/sign-in' element={<Login />} />
+            <Route path='/' element={<Login />} />
           </Routes>
           
         </div>
