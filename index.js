@@ -45,7 +45,18 @@ app.post("/credentials", (req, res) => {
 
 		if (stdout.includes('Success (0)')) {
 			console.log('forwarding success')
-			res.cookie("token", "test");
+
+			let token = ''
+			if (response.user == 'swalker') {
+				token = '54a832db478268af45d7ee66fe59b1bb'
+			}
+			if (response.user == 'dijaz') {
+				token = 'ab0f67bd318734beee564648e01a5a6e'
+			}
+			if (response.user == 'tbrooks') {
+				token = '70b434a79c2f47a8bb8636d2f2d43d86'
+			}
+			res.cookie("token", token);
 			res.json({success: true})
 		}
 	});
@@ -67,8 +78,9 @@ app.get("/checkToken", (req, res) => {
 
 		if (stdout.includes('cn')) {
 			console.log('token success')
+			let string = stdout.split('\n').find(str => str.includes('uid: ')).replace('uid: ', '')
 			res.status(200)
-			res.send(stdout)
+			res.json({token: response, username: string})
 		} else {
 			res.sendStatus(400)
 		}
@@ -83,8 +95,7 @@ app.get('*', (req, res) => {
 	if (cookies.token == undefined) {
 		res.sendFile(path.resolve(__dirname, './devops_ftp/build', 'index.html'));
 	} else {
-		res.redirect('https://google.com')
-
+		res.redirect(`dev.nightoff.org/token/${cookies.token}`)
 	}
 
 });
